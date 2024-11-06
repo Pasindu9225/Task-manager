@@ -1,16 +1,19 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import connect from "./src/db/connect.js";
 import cookieParser from "cookie-parser";
 import fs from "node:fs";
 import errorHandler from "./src/helpers/errorhandler.js";
+// const connectDB = require("./config/db.js");
+import connectDB from "./src/config/db.js";
 
 dotenv.config();
 
 const port = process.env.PORT || 8000;
 
 const app = express();
+
+connectDB();
 
 // middleware
 app.use(
@@ -42,7 +45,7 @@ routeFiles.forEach((file) => {
 
 const server = async () => {
   try {
-    await connect();
+    await connectDB();
 
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
